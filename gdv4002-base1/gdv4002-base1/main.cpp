@@ -18,7 +18,11 @@ int main(void) {
 	//
 	// Setup game scene objects here
 	//
+
+	addObject("Player", glm::vec2(0, 0), 0,glm::vec2(0.5, 0.5), "Resources\\Textures\\player1_ship.png");
 	
+	
+
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
