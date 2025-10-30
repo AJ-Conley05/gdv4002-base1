@@ -1,9 +1,22 @@
 #include "Engine.h"
 
 // Function prototypes
+void myUpdate(GLFWwindow* window, double tDelta);
+
+void myUpdate(GLFWwindow* window, double tDelta)
+{
+	float player1RotationSpeed = glm::radians(90.0f);
+
+	GameObject2D* player1Object = getObject("Player");
+	player1Object->orientation += player1RotationSpeed * tDelta;
+}
+
+int main(void)
+{
+	float anglesPerSecond = glm::radians(45.0f);
+	float playerCelocity = 2.0f;
 
 
-int main(void) {
 
 	// Initialise the engine (create window, setup OpenGL backend)
 	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024);
@@ -21,7 +34,29 @@ int main(void) {
 
 	addObject("Player", glm::vec2(0, 0), 0,glm::vec2(0.5, 0.5), "Resources\\Textures\\player1_ship.png");
 	
-	
+	GameObject2D* player1Object = getObject("Player");
+	//player1Object->orientation += player1RotationSpeed * tDelta;
+
+	if (player1Object != nullptr)
+	{
+		//update player 1 here
+		player1Object->position = glm::vec2(-1.0f, 1.0f);
+
+
+	}
+
+	addObject("Player2", glm::vec2(0, 0), 0, glm::vec2(0.5, 0.5), "Resources\\Textures\\bumblebee.png");
+
+	GameObject2D* player2Object = getObject("Player2");
+
+	if (player2Object != nullptr)
+	{
+		//update player 1 here
+		player2Object->position = glm::vec2(1.0f, 1.0f);
+
+	}
+
+	setUpdateFunction(myUpdate);
 
 
 	// Enter main loop - this handles update and render calls
