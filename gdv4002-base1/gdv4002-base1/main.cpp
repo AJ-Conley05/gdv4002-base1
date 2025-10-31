@@ -19,7 +19,7 @@ int main(void)
 
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024);
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 10.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -53,6 +53,20 @@ int main(void)
 	{
 		//update player 1 here
 		player2Object->position = glm::vec2(1.0f, 1.0f);
+
+	}
+
+
+	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
+	
+	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(0.5, 0.5), "Resources\\Textures\\eyeball.png");
+
+	GameObject2D* eyeballObject = getObject("Eyeball");
+
+	if (eyeballObject != nullptr)
+	{
+		//update player 1 here
+		eyeballObject->position = glm::vec2(-2.0f, -1.0f);
 
 	}
 
