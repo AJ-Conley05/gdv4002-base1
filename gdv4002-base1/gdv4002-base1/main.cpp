@@ -15,6 +15,8 @@ int main(void)
 {
 	float anglesPerSecond = glm::radians(45.0f);
 	float playerCelocity = 2.0f;
+	hideAxisLines();
+
 
 
 
@@ -27,6 +29,12 @@ int main(void)
 		printf("Cannot setup game window!!!\n");
 		return initResult; // exit if setup failed
 	}
+
+	//making transparent backgrounds
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthFunc(GL_LEQUAL);
+
 
 	//
 	// Setup game scene objects here
@@ -66,7 +74,7 @@ int main(void)
 	if (eyeballObject != nullptr)
 	{
 		//update player 1 here
-		eyeballObject->position = glm::vec2(-2.0f, -1.0f);
+		eyeballObject->position = glm::vec2(-1.0f, -1.0f);
 
 	}
 
