@@ -1,20 +1,20 @@
 #include "Engine.h"
+#include "Keys.h"
+#include <bitset>
+
 
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
+void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-void myUpdate(GLFWwindow* window, double tDelta)
-{
-	float player1RotationSpeed = glm::radians(90.0f);
 
-	GameObject2D* player1Object = getObject("Player");
-	player1Object->orientation += player1RotationSpeed * tDelta;
-}
+
+std::bitset<5> keys{ 0x0 };
 
 int main(void)
 {
 	float anglesPerSecond = glm::radians(45.0f);
-	float playerCelocity = 2.0f;
+	float playerVelocity = 2.0f;
 	hideAxisLines();
 
 
@@ -40,7 +40,9 @@ int main(void)
 	// Setup game scene objects here
 	//
 
-	addObject("Player", glm::vec2(0, 0), 0,glm::vec2(0.5, 0.5), "Resources\\Textures\\player1_ship.png");
+	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(10.0, 10.0), "Resources\\Textures\\Background.png");
+
+	addObject("Player", glm::vec2(0, 0), 0,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");
 	
 	GameObject2D* player1Object = getObject("Player");
 	//player1Object->orientation += player1RotationSpeed * tDelta;
@@ -50,17 +52,6 @@ int main(void)
 		//update player 1 here
 		player1Object->position = glm::vec2(-1.0f, 1.0f);
 
-
-	}
-
-	addObject("Player2", glm::vec2(0, 0), 0, glm::vec2(0.5, 0.5), "Resources\\Textures\\bumblebee.png");
-
-	GameObject2D* player2Object = getObject("Player2");
-
-	if (player2Object != nullptr)
-	{
-		//update player 1 here
-		player2Object->position = glm::vec2(1.0f, 1.0f);
 
 	}
 
@@ -79,6 +70,10 @@ int main(void)
 	}
 
 	setUpdateFunction(myUpdate);
+	setUpdateFunction(myUpdate);
+	setKeyboardHandler(myKeyboardHandler);
+
+	
 
 
 	// Enter main loop - this handles update and render calls
@@ -91,4 +86,110 @@ int main(void)
 	return 0;
 }
 
+
+void myUpdate(GLFWwindow* window, double tDelta)
+{
+	float player1RotationSpeed = glm::radians(180.0f);
+
+	GameObject2D* player1Object = getObject("Player");
+	
+
+	//Player move up
+	static float playerSpeed = 1.0f; // distance per second
+
+	if (keys.test(Key::W) == true)
+	{
+
+		player1Object->position.y += playerSpeed * (float)tDelta;
+	}
+
+	//Player move down
+
+	if (keys.test(Key::S) == true)
+	{
+
+		player1Object->position.y -= playerSpeed * (float)tDelta;
+	}
+
+	//Player move left
+
+	if (keys.test(Key::A) == true)
+	{
+
+		player1Object->orientation += player1RotationSpeed * tDelta;
+	}
+
+	//Player move right
+
+	if (keys.test(Key::D) == true)
+	{
+
+		player1Object->orientation -= player1RotationSpeed * tDelta;
+	}
+
+
+}
+
+
+void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	// Check if a key is pressed
+	if (action == GLFW_PRESS)
+	{
+
+		// check which key was pressed...
+		switch (key)
+		{
+		case GLFW_KEY_ESCAPE:
+			// If escape is pressed tell GLFW we want to close the window (and quit)
+			glfwSetWindowShouldClose(window, true);
+			break;
+				case GLFW_KEY_W:
+					printf("w pressed\n");
+					keys[Key::W] = true;
+					break;
+						case GLFW_KEY_S:
+							printf("s pressed\n");
+							keys[Key::S] = true;
+							break;
+								case GLFW_KEY_A:
+									printf("a pressed\n");
+									keys[Key::A] = true;
+									break;
+										case GLFW_KEY_D:
+											printf("d pressed\n");
+											keys[Key::D] = true;
+											break;
+
+		default:
+		{
+		}
+		}
+	}
+	// If not check a key has been released
+	else if (action == GLFW_RELEASE) 
+	{
+		// handle key release events
+		switch (key)
+		{
+		case GLFW_KEY_W:
+			printf("w released\n");
+			keys[Key::W] = false;
+			break;
+				case GLFW_KEY_S:
+					printf("s released\n");
+					keys[Key::S] = false;
+					break;
+						case GLFW_KEY_A:
+							printf("a released\n");
+							keys[Key::A] = false;
+							break;
+								case GLFW_KEY_D:
+									printf("d released\n");
+									keys[Key::D] = false;
+									break;
+		}
+
+	}
+}
 
