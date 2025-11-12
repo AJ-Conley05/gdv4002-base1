@@ -93,6 +93,8 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 	GameObject2D* player1Object = getObject("Player");
 	
+	
+
 
 	//Player move up
 	static float playerSpeed = 1.0f; // distance per second
@@ -100,7 +102,10 @@ void myUpdate(GLFWwindow* window, double tDelta)
 	if (keys.test(Key::W) == true)
 	{
 
-		player1Object->position.y += playerSpeed * (float)tDelta;
+		player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+		player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;
+		
+		
 	}
 
 	//Player move down
@@ -108,7 +113,8 @@ void myUpdate(GLFWwindow* window, double tDelta)
 	if (keys.test(Key::S) == true)
 	{
 
-		player1Object->position.y -= playerSpeed * (float)tDelta;
+		player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+		player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;
 	}
 
 	//Player move left
