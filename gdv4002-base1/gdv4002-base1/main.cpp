@@ -6,7 +6,8 @@
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-
+float enemyPhase[3] = { 0.7f, 0.8f, 0.5f };
+float enemyPhaseVelocity[3] = { glm::radians(64.0f), glm::radians(72.0f), glm::radians(90.0f) };
 
 
 std::bitset<5> keys{ 0x0 };
@@ -14,7 +15,10 @@ std::bitset<5> keys{ 0x0 };
 int main(void)
 {
 	float anglesPerSecond = glm::radians(45.0f);
+	float playerStartingOrientation = glm::radians(90.0f);
 	float playerVelocity = 2.0f;
+	float phase = 0.0f;
+
 	hideAxisLines();
 
 
@@ -42,7 +46,8 @@ int main(void)
 
 	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(10.0, 10.0), "Resources\\Textures\\Background.png");
 
-	addObject("Player", glm::vec2(0, 0), 0,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");
+	// player
+	addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");
 	
 	GameObject2D* player1Object = getObject("Player");
 	//player1Object->orientation += player1RotationSpeed * tDelta;
@@ -54,9 +59,6 @@ int main(void)
 
 
 	}
-
-
-	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
 	
 	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(0.5, 0.5), "Resources\\Textures\\eyeball.png");
 
@@ -68,13 +70,24 @@ int main(void)
 		eyeballObject->position = glm::vec2(-1.0f, -1.0f);
 
 	}
+	// enemy objects
+	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(2, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(-2, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
+	
+	
+
+
+
+
 
 	setUpdateFunction(myUpdate);
 	setUpdateFunction(myUpdate);
 	setKeyboardHandler(myKeyboardHandler);
 
 	
-
+	/*listGameObjectKeys();*/
+	/*listObjectCounts();*/
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
@@ -89,15 +102,24 @@ int main(void)
 
 void myUpdate(GLFWwindow* window, double tDelta)
 {
+	// player variables
 	float player1RotationSpeed = glm::radians(180.0f);
+	static float playerSpeed = 3.0f; 
 
 	GameObject2D* player1Object = getObject("Player");
 	
-	
+	// enemies
+	GameObjectCollection enemies = getObjectCollection("Pumpkin");
+
+	for (int i = 0; i < enemies.objectCount; i++) {
+
+		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]); // assume phase stored in radians so no conversion needed
+
+		enemyPhase[i] += enemyPhaseVelocity[i] * tDelta;
+	}
 
 
 	//Player move up
-	static float playerSpeed = 1.0f; // distance per second
 
 	if (keys.test(Key::W) == true)
 	{
