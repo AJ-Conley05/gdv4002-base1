@@ -8,7 +8,7 @@ void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 float enemyPhase[3] = { 0.7f, 0.8f, 0.5f };
 float enemyPhaseVelocity[3] = { glm::radians(64.0f), glm::radians(72.0f), glm::radians(90.0f) };
-
+ 
 
 std::bitset<5> keys{ 0x0 };
 
