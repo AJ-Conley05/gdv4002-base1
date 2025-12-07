@@ -3,7 +3,7 @@
 class Player : public GameObject2D 
 {
 private:
-	float playerSpeed;
+	/*float playerSpeed;*/
 	float mass;
 	glm::vec2 velocity;
 

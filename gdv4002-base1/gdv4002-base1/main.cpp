@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Keys.h"
+#include "Player.h"
 #include <bitset>
 
 
@@ -47,7 +48,14 @@ int main(void)
 	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(10.0, 10.0), "Resources\\Textures\\Background.png");
 
 	// player
-	addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");
+	/*addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");*/
+
+	GLuint playerTexture = loadTexture("Resources\\Textures\\mySpaceship.png");
+
+	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(1.0f, 1.0f), playerTexture, 1.0f);
+
+	addObject("Player", mainPlayer);
+
 	
 	GameObject2D* player1Object = getObject("Player");
 	//player1Object->orientation += player1RotationSpeed * tDelta;
@@ -104,7 +112,8 @@ void myUpdate(GLFWwindow* window, double tDelta)
 {
 	// player variables
 	float player1RotationSpeed = glm::radians(180.0f);
-	static float playerSpeed = 3.0f; 
+	static float playerSpeed = 3.0f;
+	
 
 	GameObject2D* player1Object = getObject("Player");
 	
@@ -123,9 +132,9 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 	if (keys.test(Key::W) == true)
 	{
-
-		player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-		player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;
+		player1Object->position.y += playerSpeed * tDelta;
+		/*player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+		player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;*/
 		
 		
 	}
@@ -134,9 +143,9 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 	if (keys.test(Key::S) == true)
 	{
-
-		player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-		player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;
+		player1Object->position.y -= playerSpeed * tDelta;
+		/*player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+		player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;*/
 	}
 
 	//Player move left
