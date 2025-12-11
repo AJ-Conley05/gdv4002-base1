@@ -26,7 +26,7 @@ int main(void)
 
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 10.0f);
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 100.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -45,30 +45,30 @@ int main(void)
 	// Setup game scene objects here
 	//
 
-	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(10.0, 10.0), "Resources\\Textures\\Background.png");
+	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(100.0, 100.0), "Resources\\Textures\\Background.png");
 
-	// player
+	
 	/*addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");*/
 
 	GLuint playerTexture = loadTexture("Resources\\Textures\\mySpaceship.png");
 
-	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(1.0f, 1.0f), playerTexture, 1.0f);
+	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(10.0f, 10.0f), playerTexture, 1.0f);
 
 	addObject("Player", mainPlayer);
 
 	
-	GameObject2D* player1Object = getObject("Player");
-	//player1Object->orientation += player1RotationSpeed * tDelta;
+	//GameObject2D* player1Object = getObject("Player");
+	////player1Object->orientation += player1RotationSpeed * tDelta;
 
-	if (player1Object != nullptr)
-	{
-		//update player 1 here
-		player1Object->position = glm::vec2(-1.0f, 1.0f);
+	//if (player1Object != nullptr)
+	//{
+	//	//update player 1 here
+	//	player1Object->position = glm::vec2(-1.0f, 1.0f);
 
 
-	}
+	//}
 	
-	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(0.5, 0.5), "Resources\\Textures\\eyeball.png");
+	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(5.0, 5.0), "Resources\\Textures\\eyeball.png");
 
 	GameObject2D* eyeballObject = getObject("Eyeball");
 
@@ -79,9 +79,9 @@ int main(void)
 
 	}
 	// enemy objects
-	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
-	addObject("Pumpkin", glm::vec2(2, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
-	addObject("Pumpkin", glm::vec2(-2, 0), 0, glm::vec2(2, 2), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(-20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
 	
 	
 
@@ -89,7 +89,6 @@ int main(void)
 
 
 
-	setUpdateFunction(myUpdate);
 	setUpdateFunction(myUpdate);
 	setKeyboardHandler(myKeyboardHandler);
 
@@ -111,12 +110,13 @@ int main(void)
 void myUpdate(GLFWwindow* window, double tDelta)
 {
 	// player variables
-	float player1RotationSpeed = glm::radians(180.0f);
-	static float playerSpeed = 3.0f;
+	//float player1RotationSpeed = glm::radians(180.0f);
+	//static float playerSpeed = 3.0f;
 	
 
 	GameObject2D* player1Object = getObject("Player");
-	
+	player1Object->update(tDelta);
+
 	// enemies
 	GameObjectCollection enemies = getObjectCollection("Pumpkin");
 
@@ -130,39 +130,39 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 	//Player move up
 
-	if (keys.test(Key::W) == true)
-	{
-		player1Object->position.y += playerSpeed * tDelta;
-		/*player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-		player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;*/
-		
-		
-	}
+	//if (keys.test(Key::W) == true)
+	//{
+	//	/*player1Object->position.y += playerSpeed * tDelta;*/
+	//	player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+	//	player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;
+	//	
+	//	
+	//}
 
-	//Player move down
+	////Player move down
 
-	if (keys.test(Key::S) == true)
-	{
-		player1Object->position.y -= playerSpeed * tDelta;
-		/*player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-		player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;*/
-	}
+	//if (keys.test(Key::S) == true)
+	//{
+	//	/*player1Object->position.y -= playerSpeed * tDelta;*/
+	//	player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
+	//	player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;
+	//}
 
-	//Player move left
+	////Player move left
 
-	if (keys.test(Key::A) == true)
-	{
+	//if (keys.test(Key::A) == true)
+	//{
 
-		player1Object->orientation += player1RotationSpeed * tDelta;
-	}
+	//	player1Object->orientation += player1RotationSpeed * tDelta;
+	//}
 
-	//Player move right
+	////Player move right
 
-	if (keys.test(Key::D) == true)
-	{
+	//if (keys.test(Key::D) == true)
+	//{
 
-		player1Object->orientation -= player1RotationSpeed * tDelta;
-	}
+	//	player1Object->orientation -= player1RotationSpeed * tDelta;
+	//}
 
 
 }

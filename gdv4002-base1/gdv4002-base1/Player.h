@@ -6,6 +6,7 @@ private:
 	/*float playerSpeed;*/
 	float mass;
 	glm::vec2 velocity;
+	const float MAX_SPEED = 0.25f;
 
 public:
 	Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass);
