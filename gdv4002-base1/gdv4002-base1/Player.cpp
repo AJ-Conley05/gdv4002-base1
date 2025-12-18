@@ -2,7 +2,7 @@
 #include "keys.h"
 #include <bitset>
 
-extern std::bitset<5> keys;
+extern std::bitset<6> keys;
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass) : GameObject2D(initPosition, initOrientation, initSize, initTextureID)
 {
 	this->mass = mass;
@@ -22,39 +22,52 @@ void Player::update(double tDelta)
 
 	float player1RotationSpeed = glm::radians(180.0f);
 
-	if (keys.test(Key::W) == true) {
+	if (keys.test(Key::W) == true)
+	{
 
 		//F += glm::vec2(0.0f, thrust);
 		F.y += thrust * sin(Player::orientation) * (float)tDelta;
 		F.x += thrust * cos(Player::orientation) * (float)tDelta;
 		
 	}
-	if (keys.test(Key::S) == true) {
+	if (keys.test(Key::S) == true)
+	{
 
 		//F += glm::vec2(0.0f, -thrust);
 		F.y -= thrust * sin(Player::orientation) * (float)tDelta;
 		F.x -= thrust * cos(Player::orientation) * (float)tDelta;
 		
 	}
-	if (keys.test(Key::A) == true) {
+	if (keys.test(Key::A) == true)
+	{
 
 		Player::orientation += player1RotationSpeed * tDelta;
 
 	}
-	if (keys.test(Key::D) == true) {
+	if (keys.test(Key::D) == true)
+	{
 
 		Player::orientation -= player1RotationSpeed * tDelta;
 	}
+	
 
 	glm::vec2 a = F * (1.0f / mass);
 
 	velocity = velocity + (a);
 
-	if (glm::length(velocity) > MAX_SPEED) {
+	if (glm::length(velocity) > MAX_SPEED) 
+	{
 		velocity = glm::normalize(velocity);
 		velocity *= MAX_SPEED;
 	}
 
+	if (keys.test(Key::LEFTSHIFT) == true)
+	{
+		velocity *= 0.97f;
+		
+	}
 	position = position + (velocity);
+
+	
 }
 

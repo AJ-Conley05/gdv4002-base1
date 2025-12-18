@@ -11,7 +11,7 @@ float enemyPhase[3] = { 0.7f, 0.8f, 0.5f };
 float enemyPhaseVelocity[3] = { glm::radians(64.0f), glm::radians(72.0f), glm::radians(90.0f) };
  
 
-std::bitset<5> keys{ 0x0 };
+std::bitset<6> keys{ 0x0 };
 
 int main(void)
 {
@@ -197,6 +197,11 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 											printf("d pressed\n");
 											keys[Key::D] = true;
 											break;
+												case GLFW_KEY_LEFT_SHIFT:
+													printf("left shift pressed\n");
+													keys[Key::LEFTSHIFT] = true;
+													break;
+
 
 		default:
 		{
@@ -225,6 +230,10 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 									printf("d released\n");
 									keys[Key::D] = false;
 									break;
+										case GLFW_KEY_LEFT_SHIFT:
+											printf("left shift released\n");
+											keys[Key::LEFTSHIFT] = false;
+											break;
 		}
 
 	}
