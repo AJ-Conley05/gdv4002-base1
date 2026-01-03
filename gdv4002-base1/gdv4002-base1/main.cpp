@@ -1,22 +1,25 @@
 #include "Engine.h"
 #include "Keys.h"
 #include "Player.h"
+#include "Emitter.h"
 #include <bitset>
 
 
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-float enemyPhase[3] = { 0.7f, 0.8f, 0.5f };
-float enemyPhaseVelocity[3] = { glm::radians(64.0f), glm::radians(72.0f), glm::radians(90.0f) };
+float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
+float enemyPhaseVelocity[3] = { glm::radians(90.0f), glm::radians(90.0f), glm::radians(90.0f) };
+void deleteSnowlakes(GLFWwindow* window, double tDelta);
  
-
 std::bitset<6> keys{ 0x0 };
+
+glm::vec2 gravity = glm::vec2(0.0f, -0.005);
 
 int main(void)
 {
-	float anglesPerSecond = glm::radians(45.0f);
-	float playerStartingOrientation = glm::radians(90.0f);
+	/*float anglesPerSecond = glm::radians(45.0f);*/
+	/*float playerStartingOrientation = glm::radians(90.0f);*/
 	float playerVelocity = 2.0f;
 	float phase = 0.0f;
 
@@ -39,18 +42,23 @@ int main(void)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDepthFunc(GL_LEQUAL);
-
+	
 
 	//
 	// Setup game scene objects here
 	//
 
+	
+
 	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(100.0, 100.0), "Resources\\Textures\\Background.png");
 
-	
+	Emitter* emitter = new Emitter(glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f), glm::vec2(getViewplaneWidth() / 2.0f, 0.0f), 0.05f);
+
+	addObject("Emitter", emitter);
+
 	/*addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");*/
 
-	GLuint playerTexture = loadTexture("Resources\\Textures\\mySpaceship.png");
+	GLuint playerTexture = loadTexture("Resources\\Textures\\MySpaceship.png");
 
 	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(10.0f, 10.0f), playerTexture, 1.0f);
 
@@ -70,31 +78,27 @@ int main(void)
 	
 	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(5.0, 5.0), "Resources\\Textures\\eyeball.png");
 
-	GameObject2D* eyeballObject = getObject("Eyeball");
+	//GameObject2D* eyeballObject = getObject("Eyeball");
 
-	if (eyeballObject != nullptr)
-	{
-		//update player 1 here
-		eyeballObject->position = glm::vec2(-1.0f, -1.0f);
+	//if (eyeballObject != nullptr)
+	//{
+	//	//update player 1 here
+	//	eyeballObject->position = glm::vec2(-1.0f, -1.0f);
 
-	}
 	// enemy objects
-	addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
+	/*addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
 	addObject("Pumpkin", glm::vec2(20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
-	addObject("Pumpkin", glm::vec2(-20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
+	addObject("Pumpkin", glm::vec2(-20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");*/
+
+
+
 	
-	
-
-
-
-
-
 	setUpdateFunction(myUpdate);
 	setKeyboardHandler(myKeyboardHandler);
-
+	setUpdateFunction(deleteSnowlakes, false);
 	
-	/*listGameObjectKeys();*/
-	/*listObjectCounts();*/
+	/*listGameObjectKeys();
+	listObjectCounts();*/
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
@@ -106,16 +110,32 @@ int main(void)
 	return 0;
 }
 
+void deleteSnowlakes(GLFWwindow* window, double tDelta) {
+
+	GameObjectCollection bugs = getObjectCollection("bug");
+
+	for (int i = 0; i < bugs.objectCount; i++) {
+
+		if (bugs.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)) {
+
+			deleteObject(bugs.objectArray[i]);
+		}
+	}
+}
+
 
 void myUpdate(GLFWwindow* window, double tDelta)
 {
 	// player variables
 	//float player1RotationSpeed = glm::radians(180.0f);
 	//static float playerSpeed = 3.0f;
-	
+
+	/*GameObject2D* emitterObject = getObject("Emitter");
+	emitterObject->update(tDelta);*/
 
 	GameObject2D* player1Object = getObject("Player");
 	player1Object->update(tDelta);
+
 
 	// enemies
 	GameObjectCollection enemies = getObjectCollection("Pumpkin");

@@ -124,6 +124,7 @@ void engineMainLoop() {
 			if (overrideUpdateFn != nullptr) {
 
 				overrideUpdateFn(window, tDelta);
+				
 			}
 		}
 		else {
@@ -162,6 +163,8 @@ void engineShutdown() {
 
 		gameClock->stop();
 		gameClock->reportTimingData();
+		listGameObjectKeys();
+		listObjectCounts();
 	}
 
 	glfwTerminate();
