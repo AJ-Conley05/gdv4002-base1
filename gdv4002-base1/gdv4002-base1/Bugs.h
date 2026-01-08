@@ -5,12 +5,14 @@
 class Bug : public GameObject2D
 {
 	private:
+		//varibales
 		float mass;
 		glm::vec2 velocity;
 
 		float angleChangePerSecond;
 
 	public:
+		//functions
 		Bug(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass, float angleChangePerSecond);
 
 		void update(double tDelta) override;

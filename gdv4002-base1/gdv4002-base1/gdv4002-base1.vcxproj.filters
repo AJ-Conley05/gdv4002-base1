@@ -19,6 +19,12 @@
     <Filter Include="MyClasses">
       <UniqueIdentifier>{39ba0524-5bb3-4dbe-80e1-a49471abe734}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClasses\Pumpkins">
+      <UniqueIdentifier>{103fe0ab-df54-4c6d-b355-5f6f2669cd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClasses\Bullets">
+      <UniqueIdentifier>{41c3fff4-cabc-4d85-b3f4-263bd34d17bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,11 +51,23 @@
     <ClCompile Include="Player.cpp">
       <Filter>MyClasses</Filter>
     </ClCompile>
+    <ClCompile Include="Emitter.cpp">
+      <Filter>MyClasses</Filter>
+    </ClCompile>
     <ClCompile Include="Bugs.cpp">
       <Filter>MyClasses</Filter>
     </ClCompile>
-    <ClCompile Include="Emitter.cpp">
-      <Filter>MyClasses</Filter>
+    <ClCompile Include="Pumpkins.cpp">
+      <Filter>MyClasses\Pumpkins</Filter>
+    </ClCompile>
+    <ClCompile Include="PumpkinEmitter.cpp">
+      <Filter>MyClasses\Pumpkins</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullets.cpp">
+      <Filter>MyClasses\Bullets</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEmitter.cpp">
+      <Filter>MyClasses\Bullets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +103,18 @@
     </ClInclude>
     <ClInclude Include="Emitter.h">
       <Filter>MyClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Pumpkins.h">
+      <Filter>MyClasses\Pumpkins</Filter>
+    </ClInclude>
+    <ClInclude Include="PumpkinEmitter.h">
+      <Filter>MyClasses\Pumpkins</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullets.h">
+      <Filter>MyClasses\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEmitter.h">
+      <Filter>MyClasses\Bullets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

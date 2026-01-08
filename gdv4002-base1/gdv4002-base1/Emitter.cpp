@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInterval) : GameObject2D(initPosition, 0.0f, initSize, 0)
 {
 	this->emitTimeInterval = emitTimeInterval;
@@ -11,6 +12,7 @@ Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInter
 
 	particleNumber = 0;
 
+	//Assign textures
 	for (int i = 0; i < 8; i++)
 	{
 
@@ -23,6 +25,7 @@ Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInter
 			cout << "failed to load texture " << path << endl;
 	}
 
+	//Setup the attribute distibution
 	random_device rd;
 
 	gen = mt19937(rd());
@@ -35,7 +38,7 @@ Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInter
 
 void Emitter::render() 
 {
-
+	//do nothing
 }
 
 void Emitter::update(double tDelta)
@@ -46,6 +49,7 @@ void Emitter::update(double tDelta)
 	{
 		emitCounter -= emitTimeInterval;
 
+		//Assignsbthe objects their attributes
 		float x = position.x + normDist(gen) * size.x;
 		float y = position.y + normDist(gen) * size.y;
 		float scale = scaleDist(gen);
@@ -53,6 +57,7 @@ void Emitter::update(double tDelta)
 		float rotationSpeed = glm::radians(normDist(gen) * 45.0f);
 		int spriteIndex = spriteDist(gen);
 
+		//creates the object
 		Bug* s1 = new Bug(glm::vec2(x, y), 0.0f, glm::vec2(scale, scale), bugs[spriteIndex], mass, rotationSpeed);
 
 		string key = string("bug");

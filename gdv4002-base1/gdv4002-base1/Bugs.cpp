@@ -4,16 +4,17 @@ extern glm::vec2 gravity;
 
 Bug::Bug(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass, float angleChangePerSecond) : GameObject2D(initPosition, initOrientation, initSize, initTextureID)
 {
+	//varibales
 	this->mass = mass;
 	velocity = glm::vec2(0.0f, 0.0f);
-	
-	/*angleChangePerSecond = glm::radians(45.0f);*/
 
 	this->angleChangePerSecond = angleChangePerSecond;
 }
 
 void Bug::update(double tDelta)
 {
+
+	//update variable values
 	glm::vec2 F = gravity;
 
 	glm::vec2 accel = F * (100.0f / mass);

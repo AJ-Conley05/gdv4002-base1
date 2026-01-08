@@ -1,19 +1,24 @@
 #pragma once
 
 #include "GameObject2D.h"
+#include "Pumpkins.h"
 #include <random>
 
-class Emitter : public GameObject2D
+
+
+
+class PumpkinEmitter : public GameObject2D
 {
 private:
-	
+
 	//variables for the class
 	float emitTimeInterval;
 	float emitCounter;
-
+	
 	unsigned long long particleNumber;
+	
 
-	GLuint bugs[8];
+	GLuint pumpkins[2];
 
 	std::mt19937 gen;
 
@@ -24,7 +29,7 @@ private:
 
 public:
 	//functions for the class
-	Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTImeInterval);
+	PumpkinEmitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTImeInterval);
 
 	void update(double tDelta) override;
 	void render() override;

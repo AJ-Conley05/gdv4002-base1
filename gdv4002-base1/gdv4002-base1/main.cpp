@@ -2,31 +2,26 @@
 #include "Keys.h"
 #include "Player.h"
 #include "Emitter.h"
+#include "PumpkinEmitter.h"
+#include "BulletEmitter.h"
+#include "Bullets.h"
 #include <bitset>
 
-
 // Function prototypes
-void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
-float enemyPhaseVelocity[3] = { glm::radians(90.0f), glm::radians(90.0f), glm::radians(90.0f) };
-void deleteSnowlakes(GLFWwindow* window, double tDelta);
+void myUpdate(GLFWwindow* window, double tDelta);
  
 std::bitset<6> keys{ 0x0 };
 
+//global variables
 glm::vec2 gravity = glm::vec2(0.0f, -0.005);
+int pumpkinLTD = 0;
+int Shooting = 0;
+
 
 int main(void)
 {
-	/*float anglesPerSecond = glm::radians(45.0f);*/
-	/*float playerStartingOrientation = glm::radians(90.0f);*/
-	float playerVelocity = 2.0f;
-	float phase = 0.0f;
-
 	hideAxisLines();
-
-
-
 
 	// Initialise the engine (create window, setup OpenGL backend)
 	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 100.0f);
@@ -43,62 +38,40 @@ int main(void)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDepthFunc(GL_LEQUAL);
 	
-
+	
 	//
 	// Setup game scene objects here
 	//
 
-	
-
+	//Background
 	addObject("Background", glm::vec2(0, 0), 0, glm::vec2(100.0, 100.0), "Resources\\Textures\\Background.png");
 
+	//Pumpkin Emitter
+	PumpkinEmitter* Pemitter = new PumpkinEmitter(glm::vec2(0.0f, getViewplaneHeight() / 100.0f * -60.0f), glm::vec2(getViewplaneWidth() / 2.0f, 0.0f), 3.0f);
+
+	addObject("PumpkinEmitter", Pemitter);
+
+	//Bullet Emitter
+	BulletEmitter* Bemitter = new BulletEmitter(glm::vec2(0.0f, getViewplaneHeight() / 4.0f * 1.2f), glm::vec2(getViewplaneWidth() / 100.0f, 0.0f), 0.5f);
+
+	addObject("BulletEmitter", Bemitter);
+
+	//Bug Emitter
 	Emitter* emitter = new Emitter(glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f), glm::vec2(getViewplaneWidth() / 2.0f, 0.0f), 0.05f);
 
 	addObject("Emitter", emitter);
 
-	/*addObject("Player", glm::vec2(0, 0), playerStartingOrientation,glm::vec2(1.0, 1.0), "Resources\\Textures\\mySpaceship.png");*/
-
+	//Player
 	GLuint playerTexture = loadTexture("Resources\\Textures\\MySpaceship.png");
 
 	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(10.0f, 10.0f), playerTexture, 1.0f);
 
 	addObject("Player", mainPlayer);
-
 	
-	//GameObject2D* player1Object = getObject("Player");
-	////player1Object->orientation += player1RotationSpeed * tDelta;
 
-	//if (player1Object != nullptr)
-	//{
-	//	//update player 1 here
-	//	player1Object->position = glm::vec2(-1.0f, 1.0f);
-
-
-	//}
-	
-	addObject("Eyeball", glm::vec2(0, 0), 0, glm::vec2(5.0, 5.0), "Resources\\Textures\\eyeball.png");
-
-	//GameObject2D* eyeballObject = getObject("Eyeball");
-
-	//if (eyeballObject != nullptr)
-	//{
-	//	//update player 1 here
-	//	eyeballObject->position = glm::vec2(-1.0f, -1.0f);
-
-	// enemy objects
-	/*addObject("Pumpkin", glm::vec2(0, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
-	addObject("Pumpkin", glm::vec2(20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");
-	addObject("Pumpkin", glm::vec2(-20, 0), 0, glm::vec2(20, 20), "Resources\\Textures\\pumpkin.png");*/
-
-
-
-	
-	setUpdateFunction(myUpdate);
+	//functions
 	setKeyboardHandler(myKeyboardHandler);
-	setUpdateFunction(deleteSnowlakes, false);
-	
-	/*listGameObjectKeys();
-	listObjectCounts();*/
+	setUpdateFunction(myUpdate, false);
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
@@ -110,81 +83,53 @@ int main(void)
 	return 0;
 }
 
-void deleteSnowlakes(GLFWwindow* window, double tDelta) {
+void myUpdate(GLFWwindow* window, double tDelta)
+{
+	//wrap pumpkins/asteroids around the screen
+	GameObjectCollection pumpkins = getObjectCollection("pumpkin");
 
+	for (int i = 0; i < pumpkins.objectCount; i++)
+	{
+
+		if (pumpkins.objectArray[i]->position.x > (getViewplaneWidth() / 1.2f))
+		{
+			std::cout << "fuckers \n";
+			pumpkins.objectArray[i]->position.x = -60;
+			
+		}
+	}
+
+	//Deletes the bugs
 	GameObjectCollection bugs = getObjectCollection("bug");
 
-	for (int i = 0; i < bugs.objectCount; i++) {
+	for (int i = 0; i < bugs.objectCount; i++)
+	{
 
-		if (bugs.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)) {
-
+		if (bugs.objectArray[i]->position.y < -(getViewplaneHeight() / 1.2f))
+		{
+			
 			deleteObject(bugs.objectArray[i]);
 		}
 	}
-}
 
+	//deletes bullets
+	GameObjectCollection bullets = getObjectCollection("bullet");
 
-void myUpdate(GLFWwindow* window, double tDelta)
-{
-	// player variables
-	//float player1RotationSpeed = glm::radians(180.0f);
-	//static float playerSpeed = 3.0f;
+	for (int i = 0; i < bullets.objectCount; i++)
+	{
 
-	/*GameObject2D* emitterObject = getObject("Emitter");
-	emitterObject->update(tDelta);*/
+		if (bullets.objectArray[i]->position.x < -(getViewplaneWidth() / 1.2f))
+		{
 
-	GameObject2D* player1Object = getObject("Player");
-	player1Object->update(tDelta);
-
-
-	// enemies
-	GameObjectCollection enemies = getObjectCollection("Pumpkin");
-
-	for (int i = 0; i < enemies.objectCount; i++) {
-
-		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]); // assume phase stored in radians so no conversion needed
-
-		enemyPhase[i] += enemyPhaseVelocity[i] * tDelta;
+			deleteObject(bullets.objectArray[i]);
+		}
 	}
 
 
-	//Player move up
-
-	//if (keys.test(Key::W) == true)
-	//{
-	//	/*player1Object->position.y += playerSpeed * tDelta;*/
-	//	player1Object->position.y += playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-	//	player1Object->position.x += playerSpeed * cos(player1Object->orientation) * (float)tDelta;
-	//	
-	//	
-	//}
-
-	////Player move down
-
-	//if (keys.test(Key::S) == true)
-	//{
-	//	/*player1Object->position.y -= playerSpeed * tDelta;*/
-	//	player1Object->position.y -= playerSpeed * sin(player1Object->orientation) * (float)tDelta;
-	//	player1Object->position.x -= playerSpeed * cos(player1Object->orientation) * (float)tDelta;
-	//}
-
-	////Player move left
-
-	//if (keys.test(Key::A) == true)
-	//{
-
-	//	player1Object->orientation += player1RotationSpeed * tDelta;
-	//}
-
-	////Player move right
-
-	//if (keys.test(Key::D) == true)
-	//{
-
-	//	player1Object->orientation -= player1RotationSpeed * tDelta;
-	//}
-
-
+	//attaches bullet emitter onto the player
+	GameObject2D* playerShip = getObject("Player");
+	GameObject2D* BulletEmitter = getObject("BulletEmitter");
+	BulletEmitter->position = playerShip->position;
 }
 
 
@@ -221,6 +166,11 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 													printf("left shift pressed\n");
 													keys[Key::LEFTSHIFT] = true;
 													break;
+														case GLFW_KEY_SPACE:
+															printf("SPACE pressed\n");
+															keys[Key::SPACE] = true;
+															Shooting = 1;
+															break;
 
 
 		default:
@@ -254,6 +204,11 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 											printf("left shift released\n");
 											keys[Key::LEFTSHIFT] = false;
 											break;
+												case GLFW_KEY_SPACE:
+													printf("SPACE released\n");
+													keys[Key::SPACE] = false;
+													Shooting = 0;
+													break;
 		}
 
 	}
