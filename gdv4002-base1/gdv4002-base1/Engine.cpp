@@ -163,7 +163,6 @@ void engineShutdown() {
 
 		gameClock->stop();
 		gameClock->reportTimingData();
-		listGameObjectKeys();
 		listObjectCounts();
 	}
 

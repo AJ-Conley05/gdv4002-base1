@@ -93,7 +93,7 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 		if (pumpkins.objectArray[i]->position.x > (getViewplaneWidth() / 1.2f))
 		{
-			std::cout << "fuckers \n";
+			std::cout << "Pumpkins wrap around \n";
 			pumpkins.objectArray[i]->position.x = -60;
 			
 		}
@@ -107,7 +107,7 @@ void myUpdate(GLFWwindow* window, double tDelta)
 
 		if (bugs.objectArray[i]->position.y < -(getViewplaneHeight() / 1.2f))
 		{
-			
+		
 			deleteObject(bugs.objectArray[i]);
 		}
 	}
